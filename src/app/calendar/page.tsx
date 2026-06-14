@@ -288,6 +288,7 @@ export default function CalendarPage() {
           views={["month", "week", "day", "agenda"]}
           defaultView={Views.MONTH}
           selectable
+          longPressThreshold={100}
           onSelectSlot={handleSelectSlot}
           onSelectEvent={handleSelectEvent}
           popup
@@ -333,7 +334,7 @@ export default function CalendarPage() {
                   onChange={(e) =>
                     setEditingEvent((prev) => ({ ...prev!, title: e.target.value }))
                   }
-                  className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
+                  className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none text-gray-900 placeholder-gray-400"
                   placeholder="事件标题"
                   autoFocus
                 />
@@ -355,7 +356,7 @@ export default function CalendarPage() {
                         start_time: new Date(e.target.value).toISOString(),
                       }))
                     }
-                    className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
+                    className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none text-gray-900"
                   />
                 </div>
                 <div>
@@ -373,7 +374,7 @@ export default function CalendarPage() {
                         end_time: new Date(e.target.value).toISOString(),
                       }))
                     }
-                    className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none"
+                    className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none text-gray-900"
                   />
                 </div>
               </div>
@@ -388,7 +389,7 @@ export default function CalendarPage() {
                       description: e.target.value,
                     }))
                   }
-                  className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none resize-none"
+                  className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none resize-none text-gray-900 placeholder-gray-400"
                   rows={3}
                   placeholder="添加备注..."
                 />
