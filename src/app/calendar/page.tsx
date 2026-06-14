@@ -281,6 +281,19 @@ export default function CalendarPage() {
         />
       </div>
 
+      {/* 手机端底部浮动添加按钮 */}
+      <button
+        onClick={() =>
+          handleSelectSlot({
+            start: new Date(),
+            end: new Date(Date.now() + 3600000),
+          })
+        }
+        className="fixed bottom-6 right-6 w-14 h-14 bg-indigo-600 text-white rounded-full shadow-lg flex items-center justify-center text-2xl hover:bg-indigo-700 active:scale-95 transition z-40 md:hidden"
+      >
+        +
+      </button>
+
       {/* 事件弹窗 */}
       {showModal && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
