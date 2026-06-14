@@ -216,7 +216,7 @@ function InviteCodeList({ calendarId }: { calendarId: string }) {
   const loadCodes = async () => {
     const { data } = await supabase
       .from("invite_codes")
-      .select("*, members!invite_codes_used_by_fkey(nickname)")
+      .select("*")
       .eq("calendar_id", calendarId)
       .order("created_at", { ascending: false });
 
@@ -234,9 +234,9 @@ function InviteCodeList({ calendarId }: { calendarId: string }) {
           <div>
             <span className="font-mono font-bold tracking-wider">{code.code}</span>
             <span className="text-xs text-gray-400 ml-2">
-              {code.used_by ? (
+              {code.use_count > 0 ? (
                 <span className="text-green-500">
-                  已被 {code.members?.nickname || "某人"} 使用
+                  已被使用
                 </span>
               ) : (
                 <span className="text-yellow-500">

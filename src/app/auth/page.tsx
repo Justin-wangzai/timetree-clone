@@ -122,7 +122,8 @@ export default function AuthPage() {
           <button
             onClick={handleJoin}
             disabled={loading || !code || !nickname}
-            className="w-full py-3 bg-indigo-600 text-white rounded-xl font-medium hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="w-full py-4 bg-indigo-600 text-white rounded-xl font-medium hover:bg-indigo-700 active:bg-indigo-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-lg cursor-pointer"
+            style={{ WebkitTapHighlightColor: "transparent" }}
           >
             {loading ? "加入中..." : "🌳 加入时间树"}
           </button>
