@@ -18,17 +18,23 @@ export default function AuthPage() {
     try {
       const supabase = createClient();
 
-      // 用邀请码查询
+      // 查邀请码：未过期 + 使用次数 < 最大次数
       const { data: invite, error: inviteError } = await supabase
         .from("invite_codes")
         .select("*, calendars(*)")
         .eq("code", code.trim().toUpperCase())
-        .is("used_by", null)
         .gte("expires_at", new Date().toISOString())
         .single();
 
       if (inviteError || !invite) {
         setError("邀请码无效或已过期");
+        setLoading(false);
+        return;
+      }
+
+      // 检查使用次数
+      if (invite.use_count >= invite.max_uses) {
+        setError("邀请码已达到使用上限");
         setLoading(false);
         return;
       }
@@ -54,10 +60,10 @@ export default function AuthPage() {
         return;
       }
 
-      // 标记邀请码已使用
+      // 增加使用次数
       await supabase
         .from("invite_codes")
-        .update({ used_by: userId, used_at: new Date().toISOString() })
+        .update({ use_count: invite.use_count + 1 })
         .eq("id", invite.id);
 
       // 存入 session

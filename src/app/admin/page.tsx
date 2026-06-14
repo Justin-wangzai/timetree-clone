@@ -10,6 +10,7 @@ export default function AdminPage() {
   const [calendars, setCalendars] = useState<any[]>([]);
   const [selectedCalendarId, setSelectedCalendarId] = useState<string>("");
   const [showCreateForm, setShowCreateForm] = useState(false);
+  const [maxUses, setMaxUses] = useState(999);
 
   const supabase = createClient();
 
@@ -51,6 +52,8 @@ export default function AdminPage() {
       .insert({
         code,
         calendar_id: selectedCalendarId,
+        max_uses: maxUses,
+        use_count: 0,
         expires_at: expiresAt.toISOString(),
       })
       .select()
@@ -146,6 +149,18 @@ export default function AdminPage() {
             <p className="text-gray-400 text-sm">请先选择一个日历</p>
           ) : (
             <>
+              <div className="mb-4">
+                <label className="block text-sm text-gray-600 mb-1">最大使用次数</label>
+                <input
+                  type="number"
+                  value={maxUses}
+                  onChange={(e) => setMaxUses(Number(e.target.value))}
+                  min={1}
+                  max={9999}
+                  className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 outline-none"
+                />
+                <p className="text-xs text-gray-400 mt-1">默认 999（几乎不限）</p>
+              </div>
               <button
                 onClick={generateInviteCode}
                 className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
