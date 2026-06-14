@@ -11,13 +11,34 @@ import type { RealtimeChannel } from "@supabase/supabase-js";
 
 const localizer = momentLocalizer(moment);
 
-// 中文
+// 配置 moment 中文
 moment.locale("zh-cn", {
   weekdays: "周日_周一_周二_周三_周四_周五_周六".split("_"),
   weekdaysShort: "周日_周一_周二_周三_周四_周五_周六".split("_"),
   months: "一月_二月_三月_四月_五月_六月_七月_八月_九月_十月_十一月_十二月".split("_"),
   meridiem: (h: number) => (h < 12 ? "上午" : "下午"),
+  week: { dow: 1 }, // 周一为每周第一天
 });
+
+// react-big-calendar 中文 messages
+const messages = {
+  date: "日期",
+  time: "时间",
+  event: "事件",
+  allDay: "全天",
+  week: "周",
+  work_week: "工作周",
+  day: "日",
+  month: "月",
+  previous: "上",
+  next: "下",
+  yesterday: "昨天",
+  tomorrow: "明天",
+  today: "今天",
+  agenda: "列表",
+  noEventsInRange: "该时段没有事件",
+  showMore: (total: number) => `还有 ${total} 个`,
+};
 
 export default function CalendarPage() {
   const router = useRouter();
@@ -270,6 +291,7 @@ export default function CalendarPage() {
           onSelectSlot={handleSelectSlot}
           onSelectEvent={handleSelectEvent}
           popup
+          messages={messages}
           eventPropGetter={() => ({
             style: {
               backgroundColor: calendar?.color || "#6366f1",

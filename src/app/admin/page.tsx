@@ -243,6 +243,9 @@ function InviteCodeList({ calendarId }: { calendarId: string }) {
                   未使用 · {new Date(code.expires_at).toLocaleDateString("zh-CN")} 过期
                 </span>
               )}
+              <span className="text-xs text-gray-400 ml-1">
+                · 已用 {code.use_count || 0}/{code.max_uses || 999} 次
+              </span>
             </span>
           </div>
           <span className="text-xs text-gray-400">
