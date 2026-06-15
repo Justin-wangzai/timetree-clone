@@ -12,13 +12,15 @@ export default function AuthPage() {
   const router = useRouter();
 
   const handleJoin = async () => {
+    if (loading || !code || !nickname) return;
+
     setLoading(true);
     setError("");
 
     try {
       const supabase = createClient();
 
-      // 查邀请码：未过期 + 使用次数 < 最大次数
+      // 查邀请码：未过期
       const { data: invite, error: inviteError } = await supabase
         .from("invite_codes")
         .select("*, calendars(*)")
@@ -78,6 +80,8 @@ export default function AuthPage() {
     }
   };
 
+  const btnDisabled = loading || !code || !nickname;
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 to-blue-100 px-4">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
@@ -96,7 +100,7 @@ export default function AuthPage() {
               value={nickname}
               onChange={(e) => setNickname(e.target.value)}
               placeholder="输入你的名字"
-              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none text-gray-900"
               maxLength={20}
             />
           </div>
@@ -110,7 +114,7 @@ export default function AuthPage() {
               value={code}
               onChange={(e) => setCode(e.target.value.toUpperCase())}
               placeholder="输入邀请码"
-              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none uppercase tracking-widest"
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none uppercase tracking-widest text-gray-900"
               maxLength={8}
             />
           </div>
@@ -119,14 +123,20 @@ export default function AuthPage() {
             <p className="text-red-500 text-sm text-center">{error}</p>
           )}
 
-          <button
-            onClick={handleJoin}
-            disabled={loading || !code || !nickname}
-            className="w-full py-4 bg-indigo-600 text-white rounded-xl font-medium hover:bg-indigo-700 active:bg-indigo-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-lg cursor-pointer"
-            style={{ WebkitTapHighlightColor: "transparent" }}
+          <div
+            onClick={btnDisabled ? undefined : handleJoin}
+            onTouchEnd={(e) => {
+              e.preventDefault();
+              if (!btnDisabled) handleJoin();
+            }}
+            style={{
+              WebkitTapHighlightColor: "transparent",
+              opacity: btnDisabled ? 0.5 : 1,
+            }}
+            className="w-full py-4 bg-indigo-600 text-white rounded-xl font-medium hover:bg-indigo-700 active:bg-indigo-800 transition-colors text-lg text-center cursor-pointer select-none"
           >
             {loading ? "加入中..." : "🌳 加入时间树"}
-          </button>
+          </div>
         </div>
 
         <p className="text-center text-xs text-gray-400 mt-6">
